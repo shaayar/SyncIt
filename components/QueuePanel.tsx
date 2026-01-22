@@ -1,6 +1,6 @@
 "use client";
 
-import { approveRequest } from "@/services/queueService";
+import { approveRequest, rejectRequest } from "@/services/queueService";
 import { useQueue } from "@/hooks/useQueue";
 
 export default function QueuePanel({
