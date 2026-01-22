@@ -6,37 +6,50 @@ import { requestSong } from "@/services/queueService";
 
 export default function RequestSongForm({ roomId }: { roomId: string }) {
   const { user } = useAuth();
-  const [title, setTitle] = useState("");
+  const [input, setInput] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  function extractVideoId(url: string) {
+    const match = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/
+    );
+    return match?.[1];
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!title.trim() || !user) return;
+    if (!user || !input.trim()) return;
+
+    setIsSubmitting(true);
+    const videoId = extractVideoId(input);
 
     await requestSong(roomId, {
-      title: title.trim(),
+      provider: videoId ? "youtube" : "local",
+      title: input,
+      videoId,
       requestedBy: user.uid,
       requestedByName: user.displayName || "User",
     });
 
-    setTitle("");
+    setInput("");
+    setIsSubmitting(false);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h1 className="text-xl font-semibold mb-2">Request Your Song</h1>
+    <form onSubmit={handleSubmit} className="space-y-3">
       <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Enter song title..."
-        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Paste YouTube link or song name..."
+        className="w-full px-3 py-2 rounded bg-zinc-800"
       />
+
       <button
         type="submit"
-        disabled={!title.trim() || !user}
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+        disabled={!user || isSubmitting}
+        className="w-full px-4 py-2 bg-blue-600 rounded disabled:opacity-50"
       >
-        Send Request
+        Request
       </button>
     </form>
   );

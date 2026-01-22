@@ -10,18 +10,17 @@ import {
 export async function requestSong(
   roomId: string,
   data: {
+    provider: "local" | "youtube";
     title: string;
-    artist?: string;
+    videoId?: string;
     requestedBy: string;
     requestedByName: string;
   }
 ) {
-  const queueRef = collection(db, "rooms", roomId, "queue");
-
-  await addDoc(queueRef, {
+  await addDoc(collection(db, "rooms", roomId, "queue"), {
     ...data,
     status: "pending",
-    createdAt: serverTimestamp(),
+    requestedAt: serverTimestamp(),
   });
 }
 
@@ -29,8 +28,12 @@ export async function approveRequest(
   roomId: string,
   requestId: string
 ) {
-  const ref = doc(db, "rooms", roomId, "queue", requestId);
-  await updateDoc(ref, { status: "approved" });
+  await updateDoc(
+    doc(db, "rooms", roomId, "queue", requestId),
+    {
+      status: "approved",
+    }
+  );
 }
 
 export async function rejectRequest(

@@ -14,6 +14,7 @@ export interface ChatMessage {
   text: string;
   senderName: string;
   senderId: string;
+  createdAt?: any;
 }
 
 export function useChat(roomId: string) {

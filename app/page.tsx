@@ -9,11 +9,12 @@ import { useAuth } from "@/hooks/useAuth";
 export default function Home() {
   const router = useRouter();
   const { user, login, loading } = useAuth();
+  
 
   async function handleCreateRoom() {
     if (!user) return;
 
-    const roomId = await createRoom(user.uid, user.displayName || "Host");
+    const roomId = await createRoom(user.uid, user.displayName || "Demo Host");
 
     router.push(`/room/${roomId}`);
   }

@@ -12,6 +12,18 @@ import { useAuth } from "./useAuth";
 
 /* ---------------- TYPES ---------------- */
 
+interface CurrentTrack {
+  id?: string;
+  title?: string;
+  provider: "youtube" | "local" | null;
+  videoId?: string;
+  audioUrl?: string;
+  startedAt?: number;
+  pausedAt?: number;
+  pausedTime?: number;
+  lastSyncedAt?: any;
+}
+
 interface Room {
   roomId: string;
   hostId: string;
@@ -19,7 +31,7 @@ interface Room {
   isPlaying: boolean;
   isActive: boolean;
   mode: string;
-  currentTrack: any;
+  currentTrack: CurrentTrack | null;
   settings: {
     allowRequests: boolean;
     allowChat: boolean;
