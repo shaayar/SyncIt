@@ -14,8 +14,6 @@ import ParticipantList from "@/components/ParticipantList";
 import LocalAudioControls from "@/components/LocalAudioControls";
 import YouTubeControls from "@/components/YouTubeControls";
 
-import { useYouTubePlayer } from "@/hooks/useYoutubePlayer";
-
 export default function RoomPage() {
   const params = useParams();
   const roomId = params.roomId as string;
@@ -75,29 +73,6 @@ export default function RoomPage() {
       audio.pause();
     }
   }, [room?.currentTrack?.provider, room?.currentTrack?.audioUrl, room?.isPlaying, room?.currentTrack?.startedAt]);
-
-  /* =========================
-     YOUTUBE PLAYER SYNC
-     ========================= */
-  const playerRef = useYouTubePlayer(
-    provider === "youtube" ? room?.currentTrack?.videoId : undefined,
-  );
-
-  useEffect(() => {
-    if (!room || !playerRef.current) return;
-    if (provider !== "youtube") return;
-
-    const player = playerRef.current;
-
-    if (room.isPlaying && room.currentTrack?.startedAt) {
-      const elapsed = (Date.now() - room.currentTrack.startedAt) / 1000;
-
-      player.seekTo(elapsed, true);
-      player.playVideo();
-    } else {
-      player.pauseVideo();
-    }
-  }, [provider, room?.isPlaying, room?.currentTrack?.startedAt]);
 
   /* =========================
      LOADING / ERROR STATES
@@ -300,7 +275,7 @@ export default function RoomPage() {
             </div>
             
             {/* Chat */}
-            <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 shadow-2xl h-full sticky top-6">
+            <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 shadow-2xl sticky top-6">
               <ChatBox roomId={roomId} />
             </div>
           </div>
