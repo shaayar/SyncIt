@@ -9,10 +9,12 @@ import QueuePanel from "@/components/QueuePanel";
 import RequestSongForm from "@/components/RequestSongForm";
 import ChatBox from "@/components/ChatBox";
 import RoomHeader from "@/components/RoomHeader";
-import ProviderSelector from "@/components/ProviderSelector";
+import YouTubePlayer from "@/components/YouTubePlayer";
+import ParticipantList from "@/components/ParticipantList";
+import LocalAudioControls from "@/components/LocalAudioControls";
+import YouTubeControls from "@/components/YouTubeControls";
 
 import { useYouTubePlayer } from "@/hooks/useYoutubePlayer";
-import HostControls from "@/components/HostControls";
 
 export default function RoomPage() {
   const params = useParams();
@@ -150,9 +152,11 @@ export default function RoomPage() {
 
               {/* YouTube Player */}
               {provider === "youtube" && room?.currentTrack?.videoId && (
-                <div className="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
-                  <div id="youtube-player" />
-                </div>
+                <YouTubePlayer 
+                  videoId={room.currentTrack.videoId}
+                  isPlaying={room.isPlaying}
+                  startedAt={room.currentTrack.startedAt}
+                />
               )}
 
               {/* Local Audio Player */}
@@ -261,7 +265,21 @@ export default function RoomPage() {
                 </div>
 
                 {/* Playback Controls */}
-                <HostControls roomId={roomId} />
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Playback Controls
+                  </h3>
+                  
+                  {selectedProvider === "local" ? (
+                    <LocalAudioControls roomId={roomId} />
+                  ) : (
+                    <YouTubeControls roomId={roomId} />
+                  )}
+                </div>
               </div>
             )}
 
@@ -274,8 +292,14 @@ export default function RoomPage() {
             </div>
           </div>
 
-          {/* RIGHT: CHAT */}
-          <div className="xl:col-span-1">
+          {/* RIGHT: CHAT & PARTICIPANTS */}
+          <div className="xl:col-span-1 space-y-6">
+            {/* Participants */}
+            <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 shadow-2xl">
+              <ParticipantList participants={participants} isHost={isHost} />
+            </div>
+            
+            {/* Chat */}
             <div className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-6 shadow-2xl h-full sticky top-6">
               <ChatBox roomId={roomId} />
             </div>

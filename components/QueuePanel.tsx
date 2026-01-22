@@ -37,7 +37,7 @@ export default function QueuePanel({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   {/* Queue Number */}
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center shrink-0">
                     <span className="text-white text-sm font-bold">
                       {index + 1}
                     </span>

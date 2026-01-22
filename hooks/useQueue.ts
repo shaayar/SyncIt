@@ -13,8 +13,12 @@ export interface QueueItem {
   id: string;
   title: string;
   artist?: string;
+  provider: "local" | "youtube";
+  videoId?: string;
+  requestedBy: string;
   requestedByName: string;
   status: "pending" | "approved" | "rejected";
+  requestedAt?: any;
 }
 
 export function useQueue(roomId: string) {
@@ -25,7 +29,7 @@ export function useQueue(roomId: string) {
 
     const q = query(
       collection(db, "rooms", roomId, "queue"),
-      orderBy("createdAt", "asc")
+      orderBy("requestedAt", "asc")
     );
 
     const unsub = onSnapshot(q, (snapshot) => {
