@@ -9,6 +9,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useAuth } from "./useAuth";
+import { RoomMode } from "@/types/mode";
 
 /* ---------------- TYPES ---------------- */
 
@@ -30,7 +31,7 @@ interface Room {
   hostName: string;
   isPlaying: boolean;
   isActive: boolean;
-  mode: string;
+  mode: RoomMode;
   currentTrack: CurrentTrack | null;
   settings: {
     allowRequests: boolean;

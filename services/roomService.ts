@@ -4,6 +4,7 @@ import {
   setDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import { DEFAULT_MODE } from "@/types/mode";
 
 /**
  * Generates a short readable room ID
@@ -34,7 +35,7 @@ export async function createRoom(
     isActive: true,
     isPlaying: false,
     participantsCount: 1,
-    mode: "music",
+    mode: DEFAULT_MODE,
     currentTrack: null,
     settings: {
       allowRequests: true,

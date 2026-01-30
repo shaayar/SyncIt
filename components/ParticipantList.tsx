@@ -50,12 +50,12 @@ export default function ParticipantList({
                 <p className="text-xs text-zinc-500">
                   {participant.isOnline ? (
                     <span className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                       Online
                     </span>
                   ) : (
                     <span className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 bg-zinc-500 rounded-full"></div>
+                      <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full"></span>
                       Offline
                     </span>
                   )}
